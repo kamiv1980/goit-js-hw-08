@@ -67,7 +67,7 @@ const images = [
 ]
 
 const modal = document.querySelector('div.lightbox')
-const gallery = document.querySelector('.js-gallery')
+const gallery = document.querySelector('.gallery')
 const button = document.querySelector('button[data-action="close-lightbox"]')
 const imgModal = modal.querySelector('.lightbox__image')
 const overlay = modal.querySelector('.lightbox__overlay')
@@ -104,29 +104,28 @@ gallery.addEventListener('click', modalWindow)
 button.addEventListener('click', closeWindow)
 overlay.addEventListener('click', closeWindow)
 
-document.addEventListener('keyup', (ev) => {
-  if (ev.code === 'Escape') {
+function keyClick(ev) {
+  if (ev.code === 'ArrowRight' && imgModal.hasAttribute('src')) {
+    if (target === gallery.lastChild.querySelector('.gallery__image')) {
+      target = gallery.firstChild.querySelector('.gallery__image')
+    } else {
+      target = target.parentNode.parentNode.nextSibling.querySelector(
+        '.gallery__image',
+      )
+    }
+    assign()
+  } else if (ev.code === 'ArrowLeft' && imgModal.hasAttribute('src')) {
+    if (target === gallery.firstChild.querySelector('.gallery__image')) {
+      target = gallery.lastChild.querySelector('.gallery__image')
+    } else {
+      target = target.parentNode.parentNode.previousSibling.querySelector(
+        '.gallery__image',
+      )
+    }
+    assign()
+  } else if (ev.code === 'Escape') {
     closeWindow()
   }
-})
-
-function nextImg(ev) {
-  if (ev.code === 'ArrowRight' && imgModal.hasAttribute('src')) {
-    target = target.parentNode.parentNode.nextSibling.querySelector(
-      '.gallery__image',
-    )
-    assign()
-  }
 }
 
-function prevImg(ev) {
-  if (ev.code === 'ArrowLeft' && imgModal.hasAttribute('src')) {
-    target = target.parentNode.parentNode.previousSibling.querySelector(
-      '.gallery__image',
-    )
-    assign()
-  }
-}
-
-document.addEventListener('keyup', nextImg)
-document.addEventListener('keyup', prevImg)
+document.addEventListener('keyup', keyClick)
